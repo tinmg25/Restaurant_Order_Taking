@@ -22,6 +22,11 @@
 <body>
     <div class="card">
         <div class="card-body">
+            @if (session('message'))
+                                <div class="alert alert-success">
+                                    {{ session('message') }}
+                                </div>
+                            @endif
             <h3>Order Form</h3>
             <div class="row">
                 <div class="col-12 col-sm-12">
@@ -54,19 +59,48 @@
                                                             <img src="{{ url('/images/' . $dish->image) }}"
                                                                 width="100" height="100"><br>
                                                             <label for="">{{ $dish->name }}</label><br>
-                                                            <input type="number"
-                                                                name="{{ $dish->id }}"><br>
+                                                            <input type="number" name="{{ $dish->id }}"><br>
                                                         </div>
                                                     </div>
                                                 </div>
                                             @endforeach
+                                        </div>
+                                        <div class="form-group col-sm-1">
+                                            <select name="table" class="form-control">
+                                                @foreach ($tables as $table)
+                                                    <option value="{{ $table->id }}">{{ $table->number }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                         <input type="submit" class="btn btn-success" value="Submit">
                                     </form>
                                 </div>
                                 <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel"
                                     aria-labelledby="custom-tabs-one-profile-tab">
-
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Dish Name</th>
+                                                <th>Table Number</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($orders as $order)
+                                                <tr>
+                                                    <td>{{ $order->dish->name }}</td>
+                                                    <td>{{ $order->table }}</td>
+                                                    <td>{{ $status[$order->status] }}</td>
+                                                    <td>
+                                                        <a style="height: 40px; margin-right:10px"
+                                                            href="/order/{{ $order->id }}/serve"
+                                                            class="btn btn-warning">Serve</a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
